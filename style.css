@@ -71,7 +71,7 @@ header { background-color: var(--dominant); box-shadow: 0 2px 10px rgba(0,0,0,0.
     display: flex; 
     flex-direction: column; 
     background: white;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Відповідає за плавність */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
 .card:hover {
