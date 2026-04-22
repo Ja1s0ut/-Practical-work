@@ -19,12 +19,12 @@ async function loadAnalytics() {
         const cleanData = rows.map(row => {
             if (!row.trim()) return null;
             const cols = row.split(',');
-            
             if (cols.length < 5) return null;
+
             const rawWeight = cols[4].replace(',', '.').replace(/"/g, '').trim();
             const rawDateStr = cols[0].replace(/"/g, '').trim();
-            const dateParts = rawDateStr.split(' ')[0].split('.');
             
+            const dateParts = rawDateStr.split(' ')[0].split('.');
             if (dateParts.length < 3) return null;
             const jsDate = new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
 
@@ -36,10 +36,7 @@ async function loadAnalytics() {
             };
         }).filter(item => item && item.weight > 0);
 
-        if (cleanData.length === 0) {
-            console.error("Масив порожній.");
-            return;
-        }
+        if (cleanData.length === 0) return;
 
         updateStats(cleanData);
         
@@ -47,7 +44,6 @@ async function loadAnalytics() {
         cleanData.forEach(item => {
             const [year, week] = getWeekNumber(item.jsDate);
             const label = `Тиждень ${week}, ${year}`;
-            
             if (!weeklyData[label]) {
                 weeklyData[label] = { total: 0, sortDate: item.jsDate };
             }
@@ -55,16 +51,13 @@ async function loadAnalytics() {
         });
 
         const sortedWeeks = Object.entries(weeklyData).sort((a,b) => a[1].sortDate - b[1].sortDate);
-        
-        const lineLabels = sortedWeeks.map(i => i[0]);
-        const lineValues = sortedWeeks.map(i => i[1].total);
+        renderLineChart(sortedWeeks.map(i => i[0]), sortedWeeks.map(i => i[1].total));
 
-        renderLineChart(lineLabels, lineValues);
         renderPieChart(cleanData);
         renderBarChart(cleanData);
 
     } catch (err) {
-        console.error("Ошибка загрузки данных:", err);
+        console.error("Помилка завантаження даних:", err);
     }
 }
 
@@ -76,41 +69,32 @@ function updateStats(data) {
 
 function renderLineChart(labels, values) {
     const ctx = document.getElementById('lineChart').getContext('2d');
-    
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Тонни брухту (загальна вага за тиждень)',
+                label: 'Загальна вага за тиждень (т)',
                 data: values,
                 borderColor: '#E65100',
                 backgroundColor: 'rgba(230, 81, 0, 0.1)',
-                borderWidth: 2,
+                borderWidth: 3,
                 fill: true,
                 tension: 0.3,
-                pointRadius: 4,
+                pointRadius: 5,
                 pointBackgroundColor: '#E65100'
             }]
         },
         options: { 
             responsive: true, 
             maintainAspectRatio: false,
+            layout: { padding: { bottom: 20 } },
             plugins: {
-                legend: {
-                    position: 'bottom',
-                }
+                legend: { position: 'bottom', labels: { padding: 20 } }
             },
             scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#1E293B' }
-                },
-                y: {
-                    grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                    ticks: { color: '#1E293B' },
-                    beginAtZero: true
-                }
+                y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                x: { grid: { display: false } }
             }
         }
     });
@@ -118,7 +102,6 @@ function renderLineChart(labels, values) {
 
 function renderPieChart(data) {
     const ctx = document.getElementById('pieChart').getContext('2d');
-    
     const typesCount = {};
     data.forEach(item => {
         typesCount[item.type] = (typesCount[item.type] || 0) + item.weight;
@@ -130,15 +113,17 @@ function renderPieChart(data) {
             labels: Object.keys(typesCount),
             datasets: [{
                 data: Object.values(typesCount),
-                backgroundColor: ['#E65100', '#1E293B', '#64748B', '#CBD5E1', '#F8FAFC', '#BF360C']
+                backgroundColor: ['#E65100', '#1E293B', '#64748B', '#CBD5E1', '#94A3B8', '#BF360C']
             }]
         },
         options: { 
             responsive: true, 
             maintainAspectRatio: false,
+            layout: { padding: { bottom: 30, top: 10 } },
             plugins: {
-                legend: {
-                    position: 'bottom',
+                legend: { 
+                    position: 'bottom', 
+                    labels: { padding: 15, boxWidth: 12, font: { size: 12 } } 
                 }
             }
         }
@@ -147,12 +132,10 @@ function renderPieChart(data) {
 
 function renderBarChart(data) {
     const ctx = document.getElementById('barChart').getContext('2d');
-    
     const companies = {};
     data.forEach(item => {
         companies[item.company] = (companies[item.company] || 0) + item.weight;
     });
-
     const sorted = Object.entries(companies).sort((a,b) => b[1] - a[1]).slice(0, 5);
 
     new Chart(ctx, {
@@ -160,23 +143,20 @@ function renderBarChart(data) {
         data: {
             labels: sorted.map(i => i[0]),
             datasets: [{
-                label: 'Вага від постачальника (т)',
+                label: 'Вага (т)',
                 data: sorted.map(i => i[1]),
-                backgroundColor: '#1E293B'
+                backgroundColor: '#1E293B',
+                borderRadius: 4
             }]
         },
         options: { 
             indexAxis: 'y', 
             responsive: true, 
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false 
-                }
-            },
+            plugins: { legend: { display: false } },
             scales: {
-                x: { beginAtZero: true, ticks: { color: '#1E293B' } },
-                y: { ticks: { color: '#1E293B' } }
+                x: { beginAtZero: true, grid: { display: false } },
+                y: { ticks: { font: { size: 11 } } }
             }
         }
     });
