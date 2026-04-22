@@ -1,6 +1,6 @@
 lucide.createIcons();
 
-const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNE7wp1ZCl9WhNifkBZsxXMYYh8eYw6nN_N-G_sT4wI4F_C69e7f_u64m6L_Vv7_0o/pub?output=csv';
+const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNE7wplZCgL9WhNifkBZsxsMYqqJOu5girzODTk1Q3XRNBySDHnOcjOLyQRSXbB_O3RPZn__JMWRRe/pub?output=csv';
 
 function getWeekNumber(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
