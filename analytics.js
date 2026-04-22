@@ -153,10 +153,24 @@ function renderBarChart(data) {
             indexAxis: 'y', 
             responsive: true, 
             maintainAspectRatio: false,
+            // Додаємо відступи для всього графіка, особливо знизу для цифр
+            layout: { 
+                padding: { left: 10, bottom: 25, right: 20, top: 10 } 
+            },
             plugins: { legend: { display: false } },
             scales: {
-                x: { beginAtZero: true, grid: { display: false } },
-                y: { ticks: { font: { size: 11 } } }
+                x: { 
+                    beginAtZero: true, 
+                    grid: { display: false },
+                    ticks: { 
+                        font: { size: 11 },
+                        padding: 10 // Відсуваємо цифри від осі X трохи нижче
+                    }
+                },
+                y: { 
+                    grid: { display: false },
+                    ticks: { font: { size: 11 } } 
+                }
             }
         }
     });
