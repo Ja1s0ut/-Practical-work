@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Аналітика закупівель | Інтерпайп Втормет</title>
+    <link rel="icon" type="image/gif" href="logo.gif">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +20,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-top: 40px;
+            margin-bottom: 60px; /* Відступ до футера */
         }
         .stat-card {
             background: var(--bg-light);
@@ -35,12 +37,19 @@
         }
         .chart-container {
             background: white;
-            padding: 20px;
+            padding: 25px; /* Більше відступів */
             border-radius: 8px;
             border: 1px solid var(--border);
-            height: 400px;
+            height: 500px; /* Збільшили висоту для кращого відображення */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container h3 {
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--secondary);
         }
         .full-width { grid-column: 1 / -1; }
+        
         @media (max-width: 768px) { .analytics-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -54,7 +63,7 @@
             </div>
             <nav class="nav-links">
                 <a href="index.html">Головна</a>
-                <a href="analytics.html" style="color: var(--accent);">Аналітика</a>
+                <a href="analytics.html" style="color: var(--accent); font-weight: 600;">Аналітика</a>
                 <a href="index.html#contacts">Контакти</a>
             </nav>
         </div>
@@ -74,7 +83,7 @@
             </div>
 
             <div class="chart-container full-width">
-                <h3>Динаміка поставок (тонни за датами)</h3>
+                <h3>Динаміка поставок (тонни за тижнями)</h3>
                 <canvas id="lineChart"></canvas>
             </div>
             
@@ -89,6 +98,35 @@
             </div>
         </div>
     </section>
+
+    <footer>
+        <div class="footer-cols">
+            <div class="logo" style="color: white; margin-bottom: 15px; font-size: 20px;">
+                <img src="logo.gif" alt="Логотип Інтерпайп" class="logo-img">
+                Інтерпайп <span>Дніпровський Втормет</span>
+            </div>
+            <div>
+                <h3>Навігація</h3>
+                <ul>
+                    <li><a href="index.html#hero">Головна</a></li>
+                    <li><a href="index.html#about">Переваги</a></li>
+                    <li><a href="index.html#services">Вимоги ДСТУ</a></li>
+                    <li><a href="analytics.html" style="color: var(--accent);">Аналітика</a></li>
+                    <li><a href="index.html#contacts">Контакти</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Режим роботи</h3>
+                <ul>
+                    <li>Пн - Пт: 08:00 – 17:00</li>
+                    <li>Сб - Нд: Вихідні</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2024-2026 АТ «Інтерпайп Дніпровський Втормет». Усі права захищено. Дизайн: Боярчук Максим.</p>
+        </div>
+    </footer>
 
     <script src="analytics.js"></script>
 </body>
