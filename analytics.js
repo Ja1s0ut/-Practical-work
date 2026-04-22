@@ -1,46 +1,70 @@
 lucide.createIcons();
 
-const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNE7wplZCgL9WhNifkBZsxsMYqqJOu5girzODTk1Q3XRNBySDHnOcjOLyQRSXbB_O3RPZn__JMWRRe/pub?output=csv';
+const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNE7wp1ZCl9WhNifkBZsxXMYYh8eYw6nN_N-G_sT4wI4F_C69e7f_u64m6L_Vv7_0o/pub?output=csv';
+
+function getWeekNumber(d) {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+    return [d.getUTCFullYear(), weekNo];
+}
 
 async function loadAnalytics() {
     try {
-        console.log("1. Починаємо завантаження даних...");
         const response = await fetch(csvUrl);
         const dataText = await response.text();
         
-        console.log("2. Дані отримано! Перші 100 символів:", dataText.substring(0, 100));
-        
         const rows = dataText.split('\n').slice(1);
         const cleanData = rows.map(row => {
-            if (!row.trim()) return null;        
+            if (!row.trim()) return null;
             const cols = row.split(',');
+            
             if (cols.length < 5) return null;
             const rawWeight = cols[4].replace(',', '.').replace(/"/g, '').trim();
+            const rawDateStr = cols[0].replace(/"/g, '').trim();
+            const dateParts = rawDateStr.split(' ')[0].split('.');
+            
+            if (dateParts.length < 3) return null;
+            const jsDate = new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
 
             return {
-                date: cols[0].replace(/"/g, '').trim(),
+                jsDate: jsDate,
                 company: cols[1].replace(/"/g, '').trim(),
                 type: cols[3].replace(/"/g, '').trim(),
                 weight: parseFloat(rawWeight) || 0
             };
         }).filter(item => item && item.weight > 0);
 
-        console.log("3. Дані після обробки (масив):", cleanData);
-
         if (cleanData.length === 0) {
-            console.error("УВАГА: Масив порожній! Можливо, формат CSV не співпадає.");
+            console.error("Масив порожній.");
             return;
         }
 
         updateStats(cleanData);
-        renderLineChart(cleanData);
+        
+        const weeklyData = {};
+        cleanData.forEach(item => {
+            const [year, week] = getWeekNumber(item.jsDate);
+            const label = `Тиждень ${week}, ${year}`;
+            
+            if (!weeklyData[label]) {
+                weeklyData[label] = { total: 0, sortDate: item.jsDate };
+            }
+            weeklyData[label].total += item.weight;
+        });
+
+        const sortedWeeks = Object.entries(weeklyData).sort((a,b) => a[1].sortDate - b[1].sortDate);
+        
+        const lineLabels = sortedWeeks.map(i => i[0]);
+        const lineValues = sortedWeeks.map(i => i[1].total);
+
+        renderLineChart(lineLabels, lineValues);
         renderPieChart(cleanData);
         renderBarChart(cleanData);
-        
-        console.log("4. Графіки успішно побудовані!");
 
     } catch (err) {
-        console.error("Помилка завантаження даних:", err);
+        console.error("Ошибка загрузки данных:", err);
     }
 }
 
@@ -50,25 +74,45 @@ function updateStats(data) {
     document.getElementById('totalDeals').innerText = data.length;
 }
 
-function renderLineChart(data) {
+function renderLineChart(labels, values) {
     const ctx = document.getElementById('lineChart').getContext('2d');
-    const labels = data.map(item => item.date.split(' ')[0]).reverse();
-    const values = data.map(item => item.weight).reverse();
-
+    
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Тонни',
+                label: 'Тонни брухту (загальна вага за тиждень)',
                 data: values,
                 borderColor: '#E65100',
                 backgroundColor: 'rgba(230, 81, 0, 0.1)',
+                borderWidth: 2,
                 fill: true,
-                tension: 0.3
+                tension: 0.3,
+                pointRadius: 4,
+                pointBackgroundColor: '#E65100'
             }]
         },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#1E293B' }
+                },
+                y: {
+                    grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                    ticks: { color: '#1E293B' },
+                    beginAtZero: true
+                }
+            }
+        }
     });
 }
 
@@ -89,7 +133,15 @@ function renderPieChart(data) {
                 backgroundColor: ['#E65100', '#1E293B', '#64748B', '#CBD5E1', '#F8FAFC', '#BF360C']
             }]
         },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
     });
 }
 
@@ -113,7 +165,20 @@ function renderBarChart(data) {
                 backgroundColor: '#1E293B'
             }]
         },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+        options: { 
+            indexAxis: 'y', 
+            responsive: true, 
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false 
+                }
+            },
+            scales: {
+                x: { beginAtZero: true, ticks: { color: '#1E293B' } },
+                y: { ticks: { color: '#1E293B' } }
+            }
+        }
     });
 }
 
