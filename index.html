@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="uk">
-<link rel="icon" type="image/gif" href="logo.gif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>АТ «Інтерпайп Дніпровський Втормет» | B2B Портал</title>
+    <link rel="icon" type="image/gif" href="logo.gif">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,13 +17,14 @@
     <header>
         <div class="nav-container">
             <div class="logo">
-    <img src="logo.gif" alt="Логотип Інтерпайп" class="logo-img">
-    Інтерпайп <span>Дніпровський Втормет</span>
-</div>
+                <img src="logo.gif" alt="Логотип Інтерпайп" class="logo-img">
+                Інтерпайп <span>Дніпровський Втормет</span>
+            </div>
             <nav class="nav-links">
                 <a href="#hero">Головна</a>
                 <a href="#about">Переваги</a>
                 <a href="#services">Вимоги ДСТУ</a>
+                <a href="analytics.html" style="color: var(--accent); font-weight: 600;">Аналітика</a>
                 <a href="#contacts">Контакти</a>
             </nav>
         </div>
@@ -130,58 +131,58 @@
             <div class="contact-info">
                 <h3>Зв'яжіться з нами</h3>
                 <br>
-                <p><i data-lucide="phone"></i> <a href="tel:+380951234567" style="font-weight: 500;">+38 (095) 123-45-67</a></p>
+                <p><i data-lucide="phone"></i> <a href="tel:+380561234567" style="font-weight: 500;">+38 (056) 123-45-67</a></p>
                 <p><i data-lucide="mail"></i> <a href="mailto:vtormet@interpipe.biz">vtormet@interpipe.biz</a></p>
                 <p><i data-lucide="map-pin"></i> м. Дніпро, вул. Липова, 1</p>
                 <br>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2643.619098939626!2d35.08638707684074!3d48.50207392569874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d95856417387d3%3A0x6b437fba8a6b1088!2sLypova%20St%2C%201%2C%20Dnipro%2C%20Dnipropetrovsk%20Oblast%2C%20Ukraine%2C%2049000!5e0!3m2!1sen!2s!4v1713800000000!5m2!1sen!2s" width="100%" height="250" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2644.020352528148!2d35.08819077678508!3d48.49444367128695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d95958d51921f1%3A0xe54fb72895bd97be!2z0LLRg9C7LiDQm9C40L_QvtCy0LAsIDEsINCU0L3RltC_0YDQviwg0JTQvdGW0L_RgNC-0L_QtdGC0YDQvtCy0YHRjNC60LAg0L7QsdC70LDRgdGC0YwsIDQ5MDAw!5e0!3m2!1suk!2sua!4v1714073322137!5m2!1suk!2sua" width="100%" height="250" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
 
             <div class="contact-form">
                 <form id="scrapForm">
-    <div class="form-group">
-        <label for="company">Назва компанії постачальника</label>
-        <input type="text" id="company" class="form-control" placeholder="Наприклад: ТОВ 'МЕТАЛОЛОМ ДНІПРО'" required>
-    </div>
-    <div class="form-group">
-        <label for="phone">Контактний телефон</label>
-        <input type="tel" id="phone" class="form-control" placeholder="+380 XX XXX XXXX" required>
-    </div>
-    <div class="form-group">
-        <label for="scrapType">Вид брухту (ДСТУ 4121-2022)</label>
-        <select id="scrapType" class="form-control" required>
-            <option value="" disabled selected>Оберіть вид брухту...</option>
-            <option value="Вид №3">Вид №3 (Габаритний сталевий)</option>
-            <option value="Вид №4">Вид №4 (Дрібний сталевий)</option>
-            <option value="Вид №5">Вид №5 (Сталева стружка)</option>
-            <option value="Вид №9">Вид №9 (Пакетний брухт)</option>
-            <option value="Вид №500">Вид №500 (Негабаритний сталевий)</option>
-            <option value="Вид №501">Вид №501 (Негабаритний чавунний)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="weight">Орієнтовна вага (в тоннах)</label>
-        <input type="number" id="weight" class="form-control" placeholder="Введіть вагу..." min="0" step="0.1" required>
-    </div>
-    <button type="submit" class="btn" style="width: 100%;">Відправити запит</button>
-</form>
+                    <div class="form-group">
+                        <label for="company">Назва компанії постачальника</label>
+                        <input type="text" id="company" class="form-control" placeholder="Наприклад: ТОВ 'МЕТАЛОЛОМ ДНІПРО'" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Контактний телефон</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="+380 XX XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scrapType">Вид брухту (ДСТУ 4121-2022)</label>
+                        <select id="scrapType" class="form-control" required>
+                            <option value="" disabled selected>Оберіть вид брухту...</option>
+                            <option value="Вид №3">Вид №3 (Габаритний сталевий)</option>
+                            <option value="Вид №4">Вид №4 (Дрібний сталевий)</option>
+                            <option value="Вид №5">Вид №5 (Сталева стружка)</option>
+                            <option value="Вид №9">Вид №9 (Пакетний брухт)</option>
+                            <option value="Вид №500">Вид №500 (Негабаритний сталевий)</option>
+                            <option value="Вид №501">Вид №501 (Негабаритний чавунний)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Орієнтовна вага (в тоннах)</label>
+                        <input type="number" id="weight" class="form-control" placeholder="Введіть вагу..." min="0" step="0.1" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Відправити запит</button>
+                </form>
             </div>
         </div>
     </section>
 
     <footer>
-        
         <div class="footer-cols">
             <div class="logo" style="color: white; margin-bottom: 15px; font-size: 20px;">
-    <img src="logo.gif" alt="Логотип Інтерпайп" class="logo-img">
-    Інтерпайп <span>Дніпровський Втормет</span>
-</div>
+                <img src="logo.gif" alt="Логотип Інтерпайп" class="logo-img">
+                Інтерпайп <span>Дніпровський Втормет</span>
+            </div>
             <div>
                 <h3>Навігація</h3>
                 <ul>
                     <li><a href="#hero">Головна</a></li>
                     <li><a href="#about">Переваги</a></li>
                     <li><a href="#services">Вимоги ДСТУ</a></li>
+                    <li><a href="analytics.html" style="color: var(--accent);">Аналітика</a></li>
                     <li><a href="#contacts">Контакти</a></li>
                 </ul>
             </div>
