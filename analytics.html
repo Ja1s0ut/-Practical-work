@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналітика закупівель | Інтерпайп Втормет</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .stat-card {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            height: 400px;
+        }
+        .full-width { grid-column: 1 / -1; }
+        @media (max-width: 768px) { .analytics-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="logo.gif" alt="Лого" class="logo-img">
+                Інтерпайп <span>Дніпровський Втормет</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Головна</a>
+                <a href="analytics.html" style="color: var(--accent);">Аналітика</a>
+                <a href="index.html#contacts">Контакти</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section" style="margin-top: 100px;">
+        <h2 class="section-title">Дашборд аналітики закупівель</h2>
+        
+        <div class="analytics-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalWeight">0</div>
+                <div class="stat-label">Загальна вага (тонн)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalDeals">0</div>
+                <div class="stat-label">Кількість заявок</div>
+            </div>
+
+            <div class="chart-container full-width">
+                <h3>Динаміка поставок (тонни за датами)</h3>
+                <canvas id="lineChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <h3>Розподіл за видами брухту</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>Топ постачальників</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <script src="analytics.js"></script>
+</body>
+</html>
