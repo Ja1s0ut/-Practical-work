@@ -1,14 +1,7 @@
 lucide.createIcons();
 
 const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNE7wplZCgL9WhNifkBZsxsMYqqJOu5girzODTk1Q3XRNBySDHnOcjOLyQRSXbB_O3RPZn__JMWRRe/pub?output=csv';
-
-function getWeekNumber(d) {
-    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-    var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-    return [d.getUTCFullYear(), weekNo];
-}
+const ukrMonths = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
 
 async function loadAnalytics() {
     try {
@@ -41,11 +34,30 @@ async function loadAnalytics() {
         updateStats(cleanData);
         
         const weeklyData = {};
+        
         cleanData.forEach(item => {
-            const [year, week] = getWeekNumber(item.jsDate);
-            const label = `Тиждень ${week}, ${year}`;
+            const d = new Date(item.jsDate);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1); 
+            
+            const monday = new Date(d.setDate(diff));
+            const sunday = new Date(monday);
+            sunday.setDate(monday.getDate() + 6);
+
+            const mDay = monday.getDate();
+            const mMonth = ukrMonths[monday.getMonth()];
+            const sDay = sunday.getDate();
+            const sMonth = ukrMonths[sunday.getMonth()];
+
+            let label;
+            if (mMonth === sMonth) {
+                label = `${mDay}-${sDay} ${mMonth}`;
+            } else {
+                label = `${mDay} ${mMonth} - ${sDay} ${sMonth}`;
+            }
+
             if (!weeklyData[label]) {
-                weeklyData[label] = { total: 0, sortDate: item.jsDate };
+                weeklyData[label] = { total: 0, sortDate: monday.getTime() }; 
             }
             weeklyData[label].total += item.weight;
         });
@@ -94,7 +106,10 @@ function renderLineChart(labels, values) {
             },
             scales: {
                 y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
-                x: { grid: { display: false } }
+                x: { 
+                    grid: { display: false },
+                    ticks: { font: { size: 11 } }
+                }
             }
         }
     });
@@ -153,22 +168,17 @@ function renderBarChart(data) {
             indexAxis: 'y', 
             responsive: true, 
             maintainAspectRatio: false,
-            layout: { 
-                padding: { left: 10, bottom: 25, right: 20, top: 10 } 
-            },
+            layout: { padding: { left: 10, bottom: 25, right: 20, top: 10 } },
             plugins: { legend: { display: false } },
             scales: {
                 x: { 
                     beginAtZero: true, 
                     grid: { display: false },
-                    ticks: { 
-                        font: { size: 11 },
-                        padding: 10 
-                    }
+                    ticks: { padding: 10, font: { size: 11 } }
                 },
                 y: { 
                     grid: { display: false },
-                    ticks: { font: { size: 11 } } 
+                    ticks: { padding: 10, font: { size: 11 } } 
                 }
             }
         }
